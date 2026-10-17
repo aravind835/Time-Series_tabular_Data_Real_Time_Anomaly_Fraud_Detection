@@ -1,0 +1,61 @@
+seed: 42
+
+data:
+  n_samples: 200000
+  n_features: 20
+  n_informative: 8
+  fraud_rate: 0.001
+  drift_strength: 0.6
+  output_dir: data
+  filename: transactions.parquet
+
+split:
+  test_size: 0.2
+  val_size: 0.1
+  time_ordered: true
+
+preprocessing:
+  scaler: standard
+  log_amount: true
+
+imbalance:
+  method: smote
+  sampling_strategy: 0.05
+  k_neighbors: 5
+
+models:
+  isolation_forest:
+    n_estimators: 200
+    max_samples: 256
+    contamination: 0.001
+  xgboost:
+    n_estimators: 400
+    max_depth: 6
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_weight: 5
+    reg_lambda: 1.0
+    tree_method: hist
+  autoencoder:
+    hidden_dims: [32, 16, 8]
+    epochs: 25
+    batch_size: 512
+    learning_rate: 0.001
+    weight_decay: 0.00001
+
+evaluation:
+  target_recall: 0.85
+  beta: 2.0
+  reports_dir: reports
+
+serving:
+  model: xgboost
+  host: 127.0.0.1
+  port: 8000
+  artifacts_dir: artifacts
+
+streaming:
+  rate_per_second: 200
+  duration_seconds: 15
+  model: xgboost

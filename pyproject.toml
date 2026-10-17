@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fraud-detection"
+version = "0.1.0"
+description = "Real-time anomaly and fraud detection for streaming financial and IoT sensor data"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.0",
+    "scipy>=1.11",
+    "scikit-learn>=1.4",
+    "xgboost>=2.0",
+    "imbalanced-learn>=0.12",
+    "torch>=2.1",
+    "pyyaml>=6.0",
+    "joblib>=1.3",
+    "fastapi>=0.115",
+    "uvicorn>=0.29",
+    "pydantic>=2.5",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "httpx>=0.27"]
+
+[project.scripts]
+fraud-generate = "fraud_detection.cli:generate_main"
+fraud-train = "fraud_detection.cli:train_main"
+fraud-evaluate = "fraud_detection.cli:evaluate_main"
+fraud-serve = "fraud_detection.cli:serve_main"
+fraud-stream = "fraud_detection.cli:stream_main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
